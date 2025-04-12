@@ -2,6 +2,7 @@ import { HomePageData } from "../../Data";
 import HeroSection from "../../components/HomePage/HeroSection.jsx";
 import OrganizationSection from "../../components/HomePage/OrganizationSection.jsx";
 import Testimonials from "../../components/HomePage/Testimonials.jsx";
+import TeamSection from "../../components/HomePage/TeamSection.jsx"
 import Features from "../../components/HomePage/Features.jsx";
 // import GreenLinesBackground from "../../assets/svgJSX/GreenLines.jsx";
 
@@ -19,6 +20,7 @@ const HomePage = () => {
       <OrganizationSection data={HomePageData.organization} />
       <Features featuresData={HomePageData.featuresData} />
       <Testimonials testimonials={HomePageData.testimonials} />
+      <TeamSection teamMembers={HomePageData.teamMembers} />
       {/* </div> */}
     </main>
   );

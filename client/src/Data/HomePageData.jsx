@@ -29,6 +29,36 @@ const HomePageData = {
     closing: "Because we believe in making learning accessible.",
     image: ORGANIZATION_IMG,
   },
+  featuresData: [
+    {
+      icon: <FaRobot size={40} className="text-blue-600" />,
+      img: img1,
+      title: "Mock Interviews",
+      description:
+        "Practice with our interviewer who adapts to your responses and simulates real interview conditions.",
+    },
+    {
+      icon: <FaUserTie size={40} className="text-purple-600" />,
+      img: img2,
+      title: "Expert Mentoring",
+      description:
+        "Connect with industry professionals who provide personalized guidance and insider knowledge.",
+    },
+    {
+      icon: <FaBookOpen size={40} className="text-green-600" />,
+      img: img3,
+      title: "Interactive Courses",
+      description:
+        "Learn interview techniques through engaging, interactive courses designed by industry experts.",
+    },
+    {
+      icon: <FaChartLine size={40} className="text-yellow-500" />,
+      img: img4,
+      title: "Real-Time Feedback",
+      description:
+        "Receive instant analysis of your performance with actionable insights to improve your skills.",
+    },
+  ],
   testimonials: [
     {
       name: "Ananya Sharma",
@@ -79,34 +109,26 @@ const HomePageData = {
       role: "Frontend Developer Intern",
     },
   ],
-  featuresData: [
+  teamMembers: [
     {
-      icon: <FaRobot size={40} className="text-blue-600" />,
-      img: img1,
-      title: "Mock Interviews",
-      description:
-        "Practice with our interviewer who adapts to your responses and simulates real interview conditions.",
+      name: "Sanket",
+      role: "Product Manager",
+      img: "https://randomuser.me/api/portraits/women/65.jpg",
     },
     {
-      icon: <FaUserTie size={40} className="text-purple-600" />,
-      img: img2,
-      title: "Expert Mentoring",
-      description:
-        "Connect with industry professionals who provide personalized guidance and insider knowledge.",
+      name: "Ankit",
+      role: "Designer",
+      img: "https://randomuser.me/api/portraits/men/75.jpg",
     },
     {
-      icon: <FaBookOpen size={40} className="text-green-600" />,
-      img: img3,
-      title: "Interactive Courses",
-      description:
-        "Learn interview techniques through engaging, interactive courses designed by industry experts.",
+      name: "Achutya",
+      role: "Investment Planner",
+      img: "https://randomuser.me/api/portraits/women/79.jpg",
     },
     {
-      icon: <FaChartLine size={40} className="text-yellow-500" />,
-      img: img4,
-      title: "Real-Time Feedback",
-      description:
-        "Receive instant analysis of your performance with actionable insights to improve your skills.",
+      name: "Member-4",
+      role: "Financial Analyst",
+      img: "https://randomuser.me/api/portraits/men/78.jpg",
     },
   ],
 };

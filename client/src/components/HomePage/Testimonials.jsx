@@ -1,8 +1,7 @@
-
 import { motion } from "framer-motion";
 
 const Testimonials = ({ testimonials }) => {
-  const containerHeight = 500;
+  const containerHeight = 200;
   const cardHeight = 160; // approx height including padding
   const maxCards = testimonials.length;
 
@@ -15,7 +14,7 @@ const Testimonials = ({ testimonials }) => {
         What Our Students Say
       </h2>
 
-      <div className="relative w-full h-[500px] overflow-visible">
+      <div className="relative w-full h-[300px] overflow-visible">
         {testimonials.map((t, index) => {
           const delay = index * 2;
           const topPosition = index * verticalSpacing;
@@ -54,7 +53,6 @@ const Testimonials = ({ testimonials }) => {
 };
 
 export default Testimonials;
-
 
 // import { motion } from "framer-motion";
 
