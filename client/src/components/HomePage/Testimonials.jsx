@@ -1,16 +1,55 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSwipeable } from "react-swipeable";
 
 const Testimonials = ({ testimonials }) => {
   const [index, setIndex] = useState(0);
+  const [itemsPerView, setItemsPerView] = useState(1);
+
+  // Handle responsiveness
+  useEffect(() => {
+    const updateItemsPerView = () => {
+      const width = window.innerWidth;
+      if (width >= 1024) setItemsPerView(3);
+      else if (width >= 640) setItemsPerView(2);
+      else setItemsPerView(1);
+    };
+
+    updateItemsPerView();
+    window.addEventListener("resize", updateItemsPerView);
+    return () => window.removeEventListener("resize", updateItemsPerView);
+  }, []);
+
+  const totalPages = Math.ceil(testimonials.length / itemsPerView);
 
   const handlePrev = () => {
-    setIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
+    setIndex((prev) => (prev === 0 ? totalPages - 1 : prev - 1));
   };
 
   const handleNext = () => {
-    setIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
+    setIndex((prev) => (prev === totalPages - 1 ? 0 : prev + 1));
   };
+
+  // Auto-play every 5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      handleNext();
+    }, 5000);
+    return () => clearInterval(timer);
+  });
+
+  // Swipe handlers
+  const handlers = useSwipeable({
+    onSwipedLeft: handleNext,
+    onSwipedRight: handlePrev,
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true,
+  });
+
+  const currentTestimonials = testimonials.slice(
+    index * itemsPerView,
+    index * itemsPerView + itemsPerView
+  );
 
   return (
     <section className="bg-gradient-to-br from-green-100 to-green-100 py-20 px-6">
@@ -18,8 +57,10 @@ const Testimonials = ({ testimonials }) => {
         What Our Students Say
       </h2>
 
-      <div className="flex justify-center items-center gap-4 relative">
-        {/* Left Button */}
+      <div
+        className="flex justify-center items-center gap-4 relative"
+        {...handlers}
+      >
         <button
           onClick={handlePrev}
           className="text-green-800 text-2xl font-bold hover:text-green-600 transition"
@@ -27,37 +68,55 @@ const Testimonials = ({ testimonials }) => {
           ◀
         </button>
 
-        {/* Testimonial Card */}
-        <div className="relative w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-[200px]">
+        <div className="w-full overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={index}
-              initial={{ opacity: 0, x: 50 }}
+              initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.5 }}
-              className="absolute top-0 left-0 w-full p-6 rounded-3xl shadow-2xl text-white bg-[#7ed899]"
+              exit={{ opacity: 0, x: -100 }}
+              transition={{ duration: 0.6 }}
+              className={`grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`}
             >
-              <p className="text-lg italic leading-relaxed">
-                “{testimonials[index].feedback}”
-              </p>
-              <p className="mt-5 font-semibold text-lg text-white">
-                — {testimonials[index].name},{" "}
-                <span className="text-sm font-normal">
-                  {testimonials[index].role}
-                </span>
-              </p>
+              {currentTestimonials.map((testimonial, idx) => (
+                <div
+                  key={idx}
+                  className="p-6 rounded-3xl shadow-2xl text-white bg-[#7ed899]"
+                >
+                  <p className="text-lg italic leading-relaxed">
+                    “{testimonial.feedback}”
+                  </p>
+                  <p className="mt-5 font-semibold text-lg text-white">
+                    — {testimonial.name},{" "}
+                    <span className="text-sm font-normal">
+                      {testimonial.role}
+                    </span>
+                  </p>
+                </div>
+              ))}
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* Right Button */}
         <button
           onClick={handleNext}
-          className="text-green-800 text-2xl font-bold hover:text-green-600 transition"
+          className="text-green-800 text-2xl font-bold hover:text-green-600 transition bg-green-500"
         >
           ▶
         </button>
+      </div>
+
+      {/* Pagination Dots */}
+      <div className="flex justify-center mt-6 space-x-2">
+        {Array.from({ length: totalPages }).map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIndex(i)}
+            className={`w-3 h-3 rounded-full ${
+              index === i ? "bg-green-600" : "bg-green-300"
+            }`}
+          />
+        ))}
       </div>
     </section>
   );

@@ -67,43 +67,43 @@ const HomePageData = {
       role: "Software Engineer Intern at Google",
     },
     {
-      name: "Ravi Verma",
+      name: "Ravi Verma-1",
       feedback:
         "The courses are beginner-friendly and well structured. I was able to land my first internship within 3 months.",
       role: "Frontend Developer Intern",
     },
     {
-      name: "Ravi Verma",
+      name: "Ravi Verma-2",
       feedback:
         "The courses are beginner-friendly and well structured. I was able to land my first internship within 3 months.",
       role: "Frontend Developer Intern",
     },
     {
-      name: "Ravi Verma",
+      name: "Ravi Verma-3",
       feedback:
         "The courses are beginner-friendly and well structured. I was able to land my first internship within 3 months.",
       role: "Frontend Developer Intern",
     },
     {
-      name: "Ravi Verma",
+      name: "Ravi Verma-4",
       feedback:
         "The courses are beginner-friendly and well structured. I was able to land my first internship within 3 months.",
       role: "Frontend Developer Intern",
     },
     {
-      name: "Ravi Verma",
+      name: "Ravi Verma-5",
       feedback:
         "The courses are beginner-friendly and well structured. I was able to land my first internship within 3 months.",
       role: "Frontend Developer Intern",
     },
     {
-      name: "Ravi Verma",
+      name: "Ravi Verma-6",
       feedback:
         "The courses are beginner-friendly and well structured. I was able to land my first internship within 3 months.",
       role: "Frontend Developer Intern",
     },
     {
-      name: "Ravi Verma",
+      name: "Ravi Verma-7",
       feedback:
         "The courses are beginner-friendly and well structured. I was able to land my first internship within 3 months.",
       role: "Frontend Developer Intern",
