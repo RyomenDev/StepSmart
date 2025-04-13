@@ -1,5 +1,4 @@
 const Features = ({ featuresData }) => {
-
   return (
     <>
       <section className="bg-gray-100 py-20 px-4">
@@ -13,6 +12,8 @@ const Features = ({ featuresData }) => {
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            {" "}
+            {/*[@media(max-width:338px)]:grid-cols-1*/}
             {featuresData?.map((feature, idx) => (
               <div
                 key={idx}

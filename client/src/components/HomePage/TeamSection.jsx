@@ -12,7 +12,7 @@ const TeamSection = ({ teamMembers }) => {
         <div className="mt-2 w-16 h-1 mx-auto bg-green-500 rounded-full" />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 max-w-6xl mx-auto">
+      <div className="grid grid-cols-2 [@media(max-width:338px)]:grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 max-w-6xl mx-auto">
         {teamMembers?.map((member, index) => (
           <div
             key={index}

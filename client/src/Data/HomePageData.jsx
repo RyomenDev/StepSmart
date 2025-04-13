@@ -113,7 +113,7 @@ const HomePageData = {
     {
       name: "Sanket",
       role: "Product Manager",
-      img: "https://randomuser.me/api/portraits/women/65.jpg",
+      img: "https://randomuser.me/api/portraits/men/65.jpg",
     },
     {
       name: "Ankit",
@@ -123,7 +123,7 @@ const HomePageData = {
     {
       name: "Achutya",
       role: "Investment Planner",
-      img: "https://randomuser.me/api/portraits/women/79.jpg",
+      img: "https://randomuser.me/api/portraits/men/79.jpg",
     },
     {
       name: "Member-4",

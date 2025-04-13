@@ -100,7 +100,7 @@ const Testimonials = ({ testimonials }) => {
 
         <button
           onClick={handleNext}
-          className="text-green-800 text-2xl font-bold hover:text-green-600 transition bg-green-500"
+          className="text-green-800 text-2xl font-bold hover:text-green-600 transition"
         >
           ▶
         </button>

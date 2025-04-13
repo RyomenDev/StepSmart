@@ -6,7 +6,7 @@ const FooterCTA = () => {
 
   return (
     <>
-      <div className="relative z-10 text-center py-16 px-4">
+      <div className="relative z-10 text-center py-2 sm:py-5 md:py-7 px-4">
         <h2 className="text-4xl font-bold mb-4 tracking-wide text-white drop-shadow-lg">
           {heading}
         </h2>
