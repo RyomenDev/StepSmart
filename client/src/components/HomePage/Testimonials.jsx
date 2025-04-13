@@ -1,91 +1,150 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useSwipeable } from "react-swipeable";
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "@iconify/react";
+import { useSwipeable } from "react-swipeable";
 
 const Testimonials = ({ testimonials }) => {
-  const [index, setIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0); // Real index
+  const [transitioning, setTransitioning] = useState(false);
   const [itemsPerView, setItemsPerView] = useState(1);
+  const [cardWidth, setCardWidth] = useState(0);
+  const containerRef = useRef(null);
+  const sliderRef = useRef(null);
 
-  // Handle responsiveness
+  // Responsive: determine items per view
   useEffect(() => {
-    const updateItemsPerView = () => {
+    const update = () => {
       const width = window.innerWidth;
       if (width >= 1024) setItemsPerView(3);
       else if (width >= 640) setItemsPerView(2);
       else setItemsPerView(1);
     };
-
-    updateItemsPerView();
-    window.addEventListener("resize", updateItemsPerView);
-    return () => window.removeEventListener("resize", updateItemsPerView);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
   }, []);
 
-  const totalPages = Math.ceil(testimonials.length / itemsPerView);
-
-  const handlePrev = () => {
-    setIndex((prev) => (prev === 0 ? totalPages - 1 : prev - 1));
-  };
-
-  const handleNext = () => {
-    setIndex((prev) => (prev === totalPages - 1 ? 0 : prev + 1));
-  };
-
-  // Auto-play every 5 seconds
+  // Calculate card width
   useEffect(() => {
-    const timer = setInterval(() => {
-      handleNext();
-    }, 4000);
-    return () => clearInterval(timer);
-  });
+    const resizeObserver = new ResizeObserver(() => {
+      if (containerRef.current) {
+        const width = containerRef.current.offsetWidth;
+        setCardWidth(width / itemsPerView);
+      }
+    });
 
-  // Swipe handlers
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+    return () => resizeObserver.disconnect();
+  }, [itemsPerView]);
+
+  const moveTo = (idx) => {
+    setCurrentIndex(idx);
+    setTransitioning(true);
+  };
+
+  const moveNext = () => moveTo(currentIndex + 1);
+  const movePrev = () => moveTo(currentIndex - 1);
+
+  // Autoplay
+  useEffect(() => {
+    const interval = setInterval(moveNext, 4000);
+    return () => clearInterval(interval);
+  }, [currentIndex]);
+
+  // Keyboard
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === "ArrowRight") moveNext();
+      else if (e.key === "ArrowLeft") movePrev();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [currentIndex]);
+
+  // Swipe
   const handlers = useSwipeable({
-    onSwipedLeft: handleNext,
-    onSwipedRight: handlePrev,
-    preventDefaultTouchmoveEvent: true,
+    onSwipedLeft: moveNext,
+    onSwipedRight: movePrev,
+    preventScrollOnSwipe: true,
     trackMouse: true,
   });
 
-  const currentTestimonials = testimonials.slice(
-    index * itemsPerView,
-    index * itemsPerView + itemsPerView
-  );
+  // Transition End: Reset index if wrapping
+  const handleTransitionEnd = () => {
+    const len = testimonials.length;
+    let corrected = false;
+
+    if (currentIndex < 0) {
+      setCurrentIndex(len - 1);
+      corrected = true;
+    } else if (currentIndex >= len) {
+      setCurrentIndex(0);
+      corrected = true;
+    }
+
+    if (corrected) {
+      setTransitioning(false);
+      requestAnimationFrame(() => {
+        sliderRef.current.style.transition = "none";
+        sliderRef.current.style.transform = `translateX(-${
+          cardWidth *
+          (1 + (corrected ? (currentIndex < 0 ? len - 1 : 0) : currentIndex))
+        }px)`;
+        requestAnimationFrame(() => {
+          sliderRef.current.style.transition = "transform 0.5s ease";
+        });
+      });
+    } else {
+      setTransitioning(false);
+    }
+  };
+
+  // Render cards with clones
+  const fullCards = [
+    testimonials[testimonials.length - 1],
+    ...testimonials,
+    testimonials[0],
+  ];
 
   return (
     <section className="bg-green-100 py-20 px-6">
-      {" "}
-      {/*bg-gradient-to-br from-green-100 to-green-100 */}
       <h2 className="text-4xl font-bold text-center text-green-800 mb-10">
         What Our Students Say
       </h2>
+
       <div
-        className="flex justify-center items-center gap-4 relative"
+        className="flex items-center justify-center gap-4 relative"
         {...handlers}
       >
         <button
-          onClick={handlePrev}
-          className="text-green-800 text-2xl font-bold hover:text-green-600 transition"
+          onClick={movePrev}
+          className="text-green-800 text-3xl hover:text-green-600 transition"
         >
-          {/* ◀ */}
           <Icon icon="ph:caret-left-bold" />
         </button>
 
-        <div className="w-full overflow-hidden">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.6 }}
-              className={`grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`}
-            >
-              {currentTestimonials.map((testimonial, idx) => (
-                <div
-                  key={idx}
-                  className="p-6 rounded-3xl shadow-2xl text-white bg-[#7ed899]"
-                >
+        <div
+          ref={containerRef}
+          className="overflow-hidden w-full max-w-6xl rounded-xl"
+        >
+          <div
+            ref={sliderRef}
+            className="flex transition-transform duration-500 ease-in-out"
+            onTransitionEnd={handleTransitionEnd}
+            style={{
+              transform: `translateX(-${cardWidth * (currentIndex + 1)}px)`,
+              transition: transitioning ? "transform 0.5s ease" : "none",
+              width: `${cardWidth * fullCards.length}px`,
+            }}
+          >
+            {fullCards.map((testimonial, i) => (
+              <div
+                key={i}
+                className="flex-shrink-0 p-4"
+                style={{ width: `${cardWidth}px` }}
+              >
+                <div className="p-6 rounded-3xl text-white bg-[#7ed899] h-full">
                   <p className="text-lg italic leading-relaxed">
                     “{testimonial.feedback}”
                   </p>
@@ -96,29 +155,31 @@ const Testimonials = ({ testimonials }) => {
                     </span>
                   </p>
                 </div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
+              </div>
+            ))}
+          </div>
         </div>
 
         <button
-          onClick={handleNext}
-          className="text-green-800 text-2xl font-bold hover:text-green-600 transition"
+          onClick={moveNext}
+          className="text-green-800 text-3xl hover:text-green-600 transition"
         >
-          {/* ▶ */}
           <Icon icon="ph:caret-right-bold" />
         </button>
       </div>
+
       {/* Pagination Dots */}
-      <div className="flex justify-center mt-6 space-x-2">
-        {Array.from({ length: totalPages }).map((_, i) => (
+      <div className="mt-8 flex justify-center gap-2">
+        {testimonials.map((_, i) => (
           <button
             key={i}
-            onClick={() => setIndex(i)}
-            className={`w-3 h-3 rounded-full ${
-              index === i ? "bg-green-600" : "bg-green-300"
+            onClick={() => moveTo(i)}
+            className={`h-3 w-3 rounded-full transition-all duration-300 ${
+              i === (currentIndex + testimonials.length) % testimonials.length
+                ? "bg-green-600 scale-125"
+                : "bg-green-300 hover:bg-green-400"
             }`}
-          />
+          ></button>
         ))}
       </div>
     </section>
@@ -126,185 +187,3 @@ const Testimonials = ({ testimonials }) => {
 };
 
 export default Testimonials;
-
-// import { motion } from "framer-motion";
-
-// const Testimonials = ({ testimonials }) => {
-//   const containerHeight = 200;
-//   const cardHeight = 160; // approx height including padding
-//   const maxCards = testimonials.length;
-
-//   // Ensure all cards fit inside 500px
-//   const verticalSpacing = (containerHeight - cardHeight) / (maxCards - 1);
-
-//   return (
-//     <section className="relative bg-gradient-to-br from-green-100 to-green-100 py-20 px-6 overflow-visible">
-//       <h2 className="text-4xl font-bold text-center text-green-800 mb-16 z-10 relative">
-//         What Our Students Say
-//       </h2>
-
-//       <div className="relative w-full h-[300px] overflow-visible">
-//         {testimonials.map((t, index) => {
-//           const delay = index * 2;
-//           const topPosition = index * verticalSpacing;
-
-//           return (
-//             <motion.div
-//               key={index}
-//               className="absolute w-80 p-6 rounded-3xl shadow-2xl text-white bg-[#7ed899]"
-//               style={{
-//                 top: `${topPosition}px`,
-//                 left: "-350px",
-//               }}
-//               animate={{
-//                 x: ["-350px", "120vw"],
-//                 y: ["0px", "-10px", "10px", "0px"],
-//                 rotate: [0, 2, -2, 0],
-//               }}
-//               transition={{
-//                 repeat: Infinity,
-//                 duration: 12 + index * 2,
-//                 ease: "linear",
-//                 delay,
-//               }}
-//             >
-//               <p className="text-lg italic leading-relaxed">“{t.feedback}”</p>
-//               <p className="mt-5 font-semibold text-lg text-white">
-//                 — {t.name},{" "}
-//                 <span className="text-sm font-normal">{t.role}</span>
-//               </p>
-//             </motion.div>
-//           );
-//         })}
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default Testimonials;
-
-// // import { motion } from "framer-motion";
-
-// // const Testimonials = ({ testimonials }) => {
-// //   const containerHeight = 500; // fixed height
-// //   const maxCards = testimonials.length;
-// //   const verticalSpacing = containerHeight / maxCards;
-
-// //   return (
-// //     <section className="relative bg-gradient-to-br from-green-100 to-green-100 py-20 px-6 overflow-visible">
-// //       <h2 className="text-4xl font-bold text-center text-green-800 mb-16 z-10 relative">
-// //         What Our Students Say
-// //       </h2>
-
-// //       <div className="relative w-full h-[500px] overflow-visible">
-// //         {testimonials.map((t, index) => {
-// //           const delay = index * 2;
-// //           const topPosition = index * verticalSpacing + 20;
-
-// //           return (
-// //             <motion.div
-// //               key={index}
-// //               className="absolute w-80 p-6 rounded-3xl shadow-2xl text-white bg-[#7ed899]"
-// //               style={{
-// //                 top: `${topPosition}px`,
-// //                 left: "-350px",
-// //               }}
-// //               animate={{
-// //                 x: ["-350px", "120vw"],
-// //                 y: ["0px", "-10px", "10px", "0px"],
-// //                 rotate: [0, 2, -2, 0],
-// //               }}
-// //               transition={{
-// //                 repeat: Infinity,
-// //                 duration: 12 + index * 2,
-// //                 ease: "linear",
-// //                 delay,
-// //               }}
-// //             >
-// //               <p className="text-lg italic leading-relaxed">“{t.feedback}”</p>
-// //               <p className="mt-5 font-semibold text-lg text-white">
-// //                 — {t.name},{" "}
-// //                 <span className="text-sm font-normal">{t.role}</span>
-// //               </p>
-// //             </motion.div>
-// //           );
-// //         })}
-// //       </div>
-// //     </section>
-// //   );
-// // };
-
-// // export default Testimonials;
-
-// // import { motion } from "framer-motion";
-
-// // const Testimonials = ({ testimonials }) => {
-// //   return (
-// //     <section className="relative bg-gradient-to-br from-green-100 to-green-100 py-20 px-6 overflow-hidden">
-// //       {" "}
-// //       {/*bg-[#48BF91]/80 */}
-// //       <h2 className="text-4xl font-bold text-center text-green-800 mb-16 z-10 relative">
-// //         What Our Students Say
-// //       </h2>
-// //       <div className="relative h-[400px] overflow-x-hidden">
-// //         {testimonials.map((t, index) => {
-// //           const delay = index * 2; // stagger animations
-
-// //           return (
-// //             <motion.div
-// //               key={index}
-// //               className="absolute w-80 p-6 rounded-3xl shadow-2xl text-white bg-[#7ed899]"
-// //               style={{
-// //                 top: `${index * 120}px`,
-// //                 left: "-350px", // start off-screen left
-// //               }}
-// //               animate={{
-// //                 x: ["-350px", "120vw"], // move fully across screen
-// //                 y: ["0px", "-15px", "15px", "0px"], // floating
-// //                 rotate: [0, 2, -2, 0], // slight wobble
-// //               }}
-// //               transition={{
-// //                 repeat: Infinity,
-// //                 duration: 12 + index * 2,
-// //                 ease: "linear",
-// //                 delay,
-// //               }}
-// //             >
-// //               <p className="text-lg italic leading-relaxed">“{t.feedback}”</p>
-// //               <p className="mt-5 font-semibold text-lg text-white">
-// //                 — {t.name},{" "}
-// //                 <span className="text-sm font-normal">{t.role}</span>
-// //               </p>
-// //             </motion.div>
-// //           );
-// //         })}
-// //       </div>
-// //     </section>
-// //   );
-// // };
-
-// // export default Testimonials;
-
-// // const Testimonials = ({ testimonials }) => {
-// //   return (
-// //     <>
-// //       <section className="bg-white py-16 px-4">
-// //         <h2 className="text-3xl font-semibold text-center text-gray-800 mb-10">
-// //           What Our Students Say
-// //         </h2>
-// //         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-// //           {testimonials.map((t, index) => (
-// //             <div key={index} className="bg-gray-100 p-6 rounded-xl shadow-sm">
-// //               <p className="text-gray-700 italic">“{t.feedback}”</p>
-// //               <p className="mt-4 font-semibold text-gray-900">
-// //                 — {t.name}, {t.role}
-// //               </p>
-// //             </div>
-// //           ))}
-// //         </div>
-// //       </section>
-// //     </>
-// //   );
-// // };
-
-// // export default Testimonials;
