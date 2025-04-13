@@ -1,16 +1,16 @@
 const HeaderData = {
   companyName: "StepSmart",
   headerOptions: [
+    // {
+    //   key: "Jobs",
+    //   path: "#",
+    // },
+    // {
+    //   key: "Blog",
+    //   path: "#",
+    // },
     {
-      key: "Jobs",
-      path: "#",
-    },
-    {
-      key: "Blog",
-      path: "#",
-    },
-    {
-      key: "Contact",
+      key: "About Us",
       path: "#Contact_Section",
     },
   ],

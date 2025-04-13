@@ -61,7 +61,13 @@ const HomePageData = {
   ],
   testimonials: [
     {
-      name: "Ananya Sharma",
+      name: "Ananya Sharma-1",
+      feedback:
+        "The mentors here genuinely care. The one-on-one sessions gave me clarity and direction in my software career.",
+      role: "Software Engineer Intern at Google",
+    },
+    {
+      name: "Ananya Sharma-2",
       feedback:
         "The mentors here genuinely care. The one-on-one sessions gave me clarity and direction in my software career.",
       role: "Software Engineer Intern at Google",

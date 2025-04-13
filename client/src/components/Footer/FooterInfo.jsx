@@ -8,7 +8,7 @@ const FooterInfo = () => {
   const { email, number } = AboutUsData;
 
   return (
-    <div className="relative z-10 bg-[#27ae60]/80 border-t border-white/30 py-2 sm:py-6 md:py-10 px-6 md:px-16 flex flex-col md:flex-row items-center justify-between gap-8">
+    <div className="relative z-10 bg-[#27ae60]/60 border-t border-white/30 py-2 sm:py-6 md:py-10 px-6 md:px-16 flex flex-col md:flex-row items-center justify-between gap-8">
       {/* Branding Section */}
       <div className="flex flex-col items-center md:items-start text-center md:text-left">
         <h3 className="text-2xl font-semibold tracking-wide mb-1 text-white">

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
+import { Icon } from "@iconify/react";
 
 const Testimonials = ({ testimonials }) => {
   const [index, setIndex] = useState(0);
@@ -34,7 +35,7 @@ const Testimonials = ({ testimonials }) => {
   useEffect(() => {
     const timer = setInterval(() => {
       handleNext();
-    }, 5000);
+    }, 4000);
     return () => clearInterval(timer);
   });
 
@@ -52,11 +53,12 @@ const Testimonials = ({ testimonials }) => {
   );
 
   return (
-    <section className="bg-gradient-to-br from-green-100 to-green-100 py-20 px-6">
+    <section className="bg-green-100 py-20 px-6">
+      {" "}
+      {/*bg-gradient-to-br from-green-100 to-green-100 */}
       <h2 className="text-4xl font-bold text-center text-green-800 mb-10">
         What Our Students Say
       </h2>
-
       <div
         className="flex justify-center items-center gap-4 relative"
         {...handlers}
@@ -65,7 +67,8 @@ const Testimonials = ({ testimonials }) => {
           onClick={handlePrev}
           className="text-green-800 text-2xl font-bold hover:text-green-600 transition"
         >
-          ◀
+          {/* ◀ */}
+          <Icon icon="ph:caret-left-bold" />
         </button>
 
         <div className="w-full overflow-hidden">
@@ -102,10 +105,10 @@ const Testimonials = ({ testimonials }) => {
           onClick={handleNext}
           className="text-green-800 text-2xl font-bold hover:text-green-600 transition"
         >
-          ▶
+          {/* ▶ */}
+          <Icon icon="ph:caret-right-bold" />
         </button>
       </div>
-
       {/* Pagination Dots */}
       <div className="flex justify-center mt-6 space-x-2">
         {Array.from({ length: totalPages }).map((_, i) => (

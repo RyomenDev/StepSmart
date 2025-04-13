@@ -8,14 +8,14 @@ const HeaderComponent = ({ data }) => {
 
   return (
     <header className="w-full sticky top-0 left-0 z-50 bg-[#296949]/80 backdrop-blur-md shadow-md">
-      <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-2 py-3 flex justify-between items-center">
         {/* Company Name */}
         <h1 className="text-3xl font-extrabold tracking-wide text-white drop-shadow-md font-[Poppins]">
           {companyName}
         </h1>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex gap-8 font-[Poppins]">
+        <nav className="hidden md:flex gap-8 font-[Poppins] md:text-2xl">
           {/* {headerOptions.map((option) => (
             <Link
               key={option.key}
