@@ -10,6 +10,10 @@ const HeaderData = {
     //   path: "#",
     // },
     {
+      key: "Login",
+      path: "login",
+    },
+    {
       key: "About Us",
       path: "#Contact_Section",
     },

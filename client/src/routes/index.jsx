@@ -5,14 +5,14 @@ import {
 } from "react-router-dom";
 import Layout from "../Layout";
 // import { Home, Login } from "../pages";
-import { HomePage } from "../containers/";
+import { HomePage, Login } from "../containers";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
-        {/* <Route path="login" element={<Login />} /> */}
+        <Route path="login" element={<Login />} />
       </Route>
     </Route>
   )

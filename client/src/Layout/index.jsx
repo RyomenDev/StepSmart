@@ -2,15 +2,15 @@ import { Outlet, useLocation } from "react-router-dom";
 import { Header, Footer } from "../containers";
 
 const Layout = () => {
-  // const location = useLocation();
+  const location = useLocation();
 
-  //   const showHeader = location.pathname !== "/login";
+  const showHeader = location.pathname !== "/login";
 
   return (
     <>
-      <Header />
+      {showHeader && <Header />}
       <Outlet />
-      <Footer />
+      {showHeader && <Footer />}
     </>
   );
 };
