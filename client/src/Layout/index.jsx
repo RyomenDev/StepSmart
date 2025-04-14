@@ -4,7 +4,8 @@ import { Header, Footer } from "../containers";
 const Layout = () => {
   const location = useLocation();
 
-  const showHeader = location.pathname !== "/login";
+  const showHeader =
+    location.pathname !== "/login" && location.pathname !== "/register";
 
   return (
     <>

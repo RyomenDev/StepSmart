@@ -14,6 +14,10 @@ const HeaderData = {
       path: "login",
     },
     {
+      key: "Register",
+      path: "register",
+    },
+    {
       key: "About Us",
       path: "#Contact_Section",
     },

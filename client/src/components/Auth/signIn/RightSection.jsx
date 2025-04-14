@@ -1,5 +1,5 @@
 // import { googleSignIn, emailPasswordSignIn } from "../../../api";
-import GoogleSignInButton from "./GoogleSignInButton";
+import GoogleSignInButton from "../GoogleButton.jsx";
 import SignInForm from "./SignInForm";
 // import conf from "../../../conf/conf.js";
 // const SERVER_URL = conf.SERVER_URL;
@@ -22,7 +22,6 @@ const RightSection = () => {
     //   const response = await emailPasswordSignIn(email, password);
     //   //   alert(response.message);
     //   console.log(response.data);
-
     //   const { access_token, refresh_token } = response.data;
     //   localStorage.setItem("accessToken", access_token);
     //   localStorage.setItem("refreshToken", refresh_token);
@@ -40,7 +39,10 @@ const RightSection = () => {
         <p className="text-gray-500 mb-6">
           Let's sign in quickly to get started
         </p>
-        <GoogleSignInButton onGoogleSignIn={handleGoogleSignIn} />
+        <GoogleSignInButton
+          onButtonClick={handleGoogleSignIn}
+          topic="Sign In with Google"
+        />
         <div className="flex items-center my-4">
           <hr className="flex-grow border-gray-300" />
           <span className="px-2 text-gray-400">OR</span>

@@ -1,4 +1,5 @@
 import HeaderComponent from "./Header";
-import LoginComponent from "./Auth/signIn";
+import SignInComponent from "./Auth/signIn";
+import SignUpComponent from "./Auth/signUp";
 
-export { HeaderComponent, LoginComponent };
+export { HeaderComponent, SignInComponent, SignUpComponent };

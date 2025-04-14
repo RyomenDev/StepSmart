@@ -5,14 +5,15 @@ import {
 } from "react-router-dom";
 import Layout from "../Layout";
 // import { Home, Login } from "../pages";
-import { HomePage, Login } from "../containers";
+import { HomePage, SignIn, SignUp } from "../containers";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
-        <Route path="login" element={<Login />} />
+        <Route path="login" element={<SignIn />} />
+        <Route path="register" element={<SignUp />} />
       </Route>
     </Route>
   )

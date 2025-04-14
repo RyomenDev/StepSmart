@@ -1,6 +1,7 @@
 import Header from "./Header";
 import HomePage from "./HomePage";
-import Login from "./Login";
+import SignIn from "./Auth/SignIn";
+import SignUp from "./Auth/SignUp";
 import Footer from "./Footer";
 
-export { Header, HomePage, Login, Footer };
+export { Header, HomePage, SignIn, SignUp, Footer };

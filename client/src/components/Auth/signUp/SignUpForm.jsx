@@ -132,7 +132,7 @@ const SignUpForm = ({ onSignUp }) => {
         />
 
         <span className="">
-          By continuing, you agree to codenetra's{" "}
+          By continuing, you agree to StepSmart's{" "}
           <a href="#" className="text-blue-500">
             Terms of Service
           </a>{" "}
